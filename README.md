@@ -33,7 +33,8 @@ Most beginner pipelines perform full reloads on every run. This project demonstr
 ---
 
 ## Architecture
-![Uploading image.png…]()
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/74dc7d15-591e-4a61-a45d-1ad06d5c2e60" /
+
 
 ```
 
