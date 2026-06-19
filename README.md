@@ -33,44 +33,8 @@ Most beginner pipelines perform full reloads on every run. This project demonstr
 ---
 
 ## Architecture
+![Uploading image.png…]()
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                         Azure SQL Database                          │
-│              products │ orders │ payments (source tables)           │
-└────────────────────────────┬────────────────────────────────────────┘
-                             │  Lakehouse Federation (Unity Catalog)
-                             ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│   BRONZE LAYER  (main.bronze)                                     │
-│  • Incremental reads using watermark logic                          │
-│  • Append-only Delta tables — immutable audit log                   │
-│  • Control table tracks last processed state per entity             │
-│  • Metadata: _ingestion_ts, _batch_id, _source, _ingestion_date     │
-└────────────────────────────┬────────────────────────────────────────┘
-                             │  Watermark + Batch ID passed via task values
-                             ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│   SILVER LAYER  (main.silver)                                     │
-│  • Data cleaning — money normalisation, typo correction             │
-│  • Deduplication on primary key + watermark column                  │
-│  • DQ checks → pass rows to silver tables, fail rows to quarantine  │
-│  • Delta MERGE (upsert) — no duplicates, handles late arrivals      │
-│  • OPTIMIZE + ZORDER for downstream join performance                │
-└────────────────────────────┬────────────────────────────────────────┘
-                             │
-                             ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│   GOLD LAYER  (main.gold)                                         │
-│  • dim_products — SCD Type 2 (full change history)                  │
-│  • fact_orders — denormalised fact table (orders + products +        │
-│                  payments joined)                                    │
-│  • BI views — revenue by category, order status, daily trend        │
-│  • OPTIMIZE + ZORDER for BI query acceleration                      │
-└────────────────────────────┬────────────────────────────────────────┘
-                             │
-                             ▼
-               BI Dashboards  │   Alerts & Monitoring
 ```
 
 ---
