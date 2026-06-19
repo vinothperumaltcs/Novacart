@@ -6,7 +6,8 @@ A production-grade, incremental data pipeline built on the **Medallion Architect
 
 ##  Architecture
 
-![Novacart — Production-Grade E-Commerce Data Pipeline Architecture](novacart_architecture.png)
+<img width="1100" height="620" alt="novacart_architecture" src="https://github.com/user-attachments/assets/352aa455-4fff-4a98-8758-e6340e1e4b1d" />
+
 
 ---
 
